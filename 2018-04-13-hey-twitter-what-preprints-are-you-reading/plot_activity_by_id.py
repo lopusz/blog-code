@@ -20,12 +20,7 @@ def parse(argv):
 
 def main(args):
 
-    tweets = []
-
-    with gzip.open(args.twitter_fname) as twitter_f:
-        for line in twitter_f:
-            tweets.append(json.loads(line))
-
+    tweets = c.read_tweets(args.twitter_fname)
     c.plot_hist(tweets, 'OUT/vis/out0.svg', False, title='All')
 
     ids = [ '1803.02329', '1803.10122',
@@ -45,9 +40,6 @@ def main(args):
         tweets_id = c.filter_tweets_by_id(tweets, id)
         c.plot_hist(tweets_id, 'OUT/vis/act_id_%02d.svg' % i, False, title=id)
 
-    # print(conv_ts_to_string(ts_min))
-    # print(conv_ts_to_string(ts_max))
-    # print((dt_max-dt_min).total_seconds()/3600.0)
 
 
 if __name__ == '__main__':

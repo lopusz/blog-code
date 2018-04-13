@@ -32,8 +32,8 @@ def main(args):
 
     with gzip.open(args.arxiv_fname) as arxiv_f:
         id_to_metadata = json.loads(arxiv_f.read())
-    print('| Ranking | Tweets | Spec | Title |')
-    print('|:---:|:---:|:---:|-------|')
+    print('| Ranking | Tweets | Spec | Title | Pdf|')
+    print('|:---:|:---:|:---:|-------|---:|')
 
     for (lp, (id, count)) in enumerate(id_to_counts.most_common(10),1):
         abs_url = 'http://arxiv.org/abs/%s' % id
@@ -45,11 +45,11 @@ def main(args):
             specs  = [normalize_spec(s) for s in metadata['header']['setSpec']]
             specs_str = '/'.join(specs)
 
-            print('%2d | %4d | %10s | [%s](%s) |' %
-                  (lp, count, specs_str, title, abs_url))
+            print('%2d | %4d | %10s | [%s](%s) | [here](%s) |' %
+                  (lp, count, specs_str, title, abs_url, pdf_url))
         else:
-            print('%2d | %4d | %10s | [%s](%s)' %
-                  (lp, count, '?', '?', abs_url, abs_url))
+            print('%2d | %4d | %10s | [%s](%s) | [here](%s) |' %
+                  (lp, count, '?', '?', abs_url, abs_url, pdf_url))
 
 
 if __name__ == '__main__':

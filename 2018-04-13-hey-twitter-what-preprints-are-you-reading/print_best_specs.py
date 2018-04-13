@@ -23,8 +23,7 @@ def parse(argv):
 def main(args):
     spec_to_counts = Counter()
 
-    with gzip.open(args.arxiv_fname) as arxiv_f:
-        id_to_metadata = json.loads(arxiv_f.read())
+    id_to_metadata = c.read_id_to_metadata(args.arxiv_fname)
 
     with gzip.open(args.twitter_fname) as twitter_f:
         for line in twitter_f:

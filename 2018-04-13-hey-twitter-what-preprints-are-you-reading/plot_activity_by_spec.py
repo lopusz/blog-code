@@ -18,10 +18,6 @@ def parse(argv):
     return parser.parse_args(argv)
 
 
-def conv_ts_to_str(ts):
-    return dt.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M')
-
-
 def normalize_spec(spec):
     return spec.split(':')[-1]
 
@@ -30,11 +26,7 @@ def main(args):
     with gzip.open(args.arxiv_fname) as arxiv_f:
         id_to_metadata = json.loads(arxiv_f.read())
 
-    tweets = []
-
-    with gzip.open(args.twitter_fname) as twitter_f:
-        for line in twitter_f:
-            tweets.append(json.loads(line))
+    tweets = c.read_tweets(args.twitter_fname)
 
     specs = [ 'cs', 'stat', 'math', 'astro-ph', 'physics',
               'cond-mat', 'hep-th', 'hep-ph', 'quant-ph', 'q-bio']
