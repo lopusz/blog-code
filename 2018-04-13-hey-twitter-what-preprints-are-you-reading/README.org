@@ -1,0 +1,22 @@
+* Hey, Twitter what papers are you reading?
+
+  + Code for the blog post [[https://lopusz.github.io/blog/hey-twitter-what-preprints-are-you-reading/][Hey, Twitter what papers are you reading?]]
+
+  + Setup
+
+    This will install all the necessary =python= dependenices using =conda=.
+    
+    Except that =jq= JSON utility is required to reproduce all results.
+
+    #+BEGIN_SRC sh
+    cd ENV
+    ./ins.sh   
+    #+END_SRC
+
+  + Reproduce results
+    #+BEGIN_SRC 
+    source ENV/env.sh
+    make 
+    #+END_SRC
+
+    Tested on a Ubuntu 14.04 box.
