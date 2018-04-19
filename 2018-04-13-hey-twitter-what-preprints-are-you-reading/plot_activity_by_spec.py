@@ -15,6 +15,9 @@ def parse(argv):
     parser.add_argument('--twitter-fname',
                         dest='twitter_fname',
                         action='store', required=True)
+    parser.add_argument('--out-plots-fformat',
+                        dest='out_plots_fformat',
+                        action='store', required=True)
     return parser.parse_args(argv)
 
 
@@ -33,9 +36,8 @@ def main(args):
 
     for i, spec in enumerate(specs, 1):
         tweets_spec = c.filter_tweets_by_spec(tweets, spec, id_to_metadata)
-        c.plot_hist(tweets_spec,
-                    'OUT/vis/act_spec_%02d.svg' % i, False, title=spec)
-
+        plot_fname = args.out_plots_fformat % i
+        c.plot_hist(tweets_spec, plot_fname, False, title=spec)
 
 
 if __name__ == '__main__':

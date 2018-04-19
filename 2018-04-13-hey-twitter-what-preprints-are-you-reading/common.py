@@ -1,7 +1,8 @@
-
 import datetime as dt
 import gzip
 import json
+
+from collections import Counter
 
 import numpy as np
 
@@ -85,7 +86,7 @@ def read_tweets(fname):
 def filter_tweets_by_spec(tweets, spec, id_to_metadata):
     return [t for t in tweets if _contains_spec(spec, t, id_to_metadata)]
 
-def filter_tweets_by_id(tweets, id):
+def filter_tweets_by_arxiv_id(tweets, id):
     return [t for t in tweets if id in t['arxiv_ids']]
 
 def filter_tweets_by_time(tweets, min_yyyy_mm_dd_hhmmss, max_yyyy_mm_dd_hhmmss):
@@ -101,3 +102,11 @@ def read_id_to_metadata(fname):
     with gzip.open(fname) as arxiv_f:
         id_to_metadata = json.loads(arxiv_f.read())
     return id_to_metadata
+
+
+def get_arxiv_id_counter(tweets):
+    id_to_count = Counter()
+    for tweet in tweets:
+       for id in tweet['arxiv_ids']:
+            id_to_count[id] += 1
+    return id_to_count

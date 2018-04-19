@@ -5,8 +5,7 @@ import json
 import gzip
 import sys
 
-from collections import Counter
-
+import common as c
 
 def parse(argv):
     parser = argparse.ArgumentParser()
@@ -23,19 +22,15 @@ def normalize_spec(spec):
 
 
 def main(args):
-    id_to_counts = Counter()
-    with gzip.open(args.twitter_fname) as twitter_f:
-        for line in twitter_f:
-            tweet = json.loads(line)
-            for id in tweet['arxiv_ids']:
-                id_to_counts[id] += 1
+    tweets = c.read_tweets(args.twitter_fname)
+    id_to_count = c.get_arxiv_id_counter(tweets)
 
     with gzip.open(args.arxiv_fname) as arxiv_f:
         id_to_metadata = json.loads(arxiv_f.read())
     print('| Ranking | Tweets | Spec | Title | Pdf|')
     print('|:---:|:---:|:---:|-------|---:|')
 
-    for (lp, (id, count)) in enumerate(id_to_counts.most_common(10),1):
+    for (lp, (id, count)) in enumerate(id_to_count.most_common(10),1):
         abs_url = 'http://arxiv.org/abs/%s' % id
         pdf_url = 'http://arxiv.org/pdf/%s' % id
         metadata = id_to_metadata.get(id, {})
