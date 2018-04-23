@@ -1,9 +1,11 @@
 
-all: OUT/mad/stats.md  OUT/mad/best_papers.md \
+all: OUT/mad/stats.md \
+     OUT/mad/best_papers.md \
      OUT/mad/best_hashtags.md OUT/mad/best_specs.md OUT/mad/best_url_types.md \
 	 OUT/mad/best_users.md \
+	 OUT/mad/best_papers_best_tweets.md \
 	 OUT/vis/act_spec_01.svg \
-	 OUT/vis/act_id_01.svg
+
 
 OUT/mad/stats.md : print_tweet_stats.py DATA/arxiv.json.gz DATA/twitter.json.gz common.py
 	mkdir -p OUT/mad
@@ -34,11 +36,14 @@ OUT/vis/act_spec_01.svg : plot_activity_by_spec.py DATA/arxiv.json.gz DATA/twitt
 	./plot_activity_by_spec.py --arxiv-fname DATA/arxiv.json.gz --twitter-fname DATA/twitter.json.gz \
 	                           --out-plots-fformat 'OUT/vis/act_spec_%02d.svg'
 
-
-OUT/vis/act_id_01.svg : plot_activity_by_arxiv_id.py DATA/arxiv.json.gz DATA/twitter.json.gz common.py
+OUT/mad/best_papers_best_tweets.md : plot_activity_by_arxiv_id.py DATA/arxiv.json.gz DATA/twitter.json.gz common.py
 	mkdir -p OUT/vis
+	mkdir -p OUT/mad
 	./plot_activity_by_arxiv_id.py --arxiv-fname DATA/arxiv.json.gz --twitter-fname DATA/twitter.json.gz \
-	                               --out-plots-fformat 'OUT/vis/act_id_%02d.svg'
+	                               --out-plots-fformat 'OUT/vis/act_id_%02d.svg' \
+	                               --out-stacked-plots-fformat 'OUT/vis/act_id_stacked_%02d.svg' \
+								   > $@
+
 
 clean:
 	rm -rf OUT

@@ -26,8 +26,7 @@ def normalize_spec(spec):
 
 
 def main(args):
-    with gzip.open(args.arxiv_fname) as arxiv_f:
-        id_to_metadata = json.loads(arxiv_f.read())
+    id_to_metadata = c.read_id_to_metadata(args.arxiv_fname)
 
     tweets = c.read_tweets(args.twitter_fname)
 
