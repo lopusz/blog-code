@@ -4,7 +4,7 @@
 
   + Setup
 
-    This will install all the necessary =python= dependenices using =conda=.
+    The commands below will install all the necessary =python= dependenices using =conda=.
     
     Except that =jq= JSON utility is required to reproduce all results.
 
@@ -18,5 +18,7 @@
     source ENV/env.sh
     make 
     #+END_SRC
+
+    This will create directories =OUT/vis= with pictures and =OUT/mad= with markdown snippetis.
 
     Tested on a Ubuntu 14.04 box.
