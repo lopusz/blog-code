@@ -21,14 +21,12 @@ def normalize_spec(spec):
     return spec.split(':')[-1]
 
 
-def main(args):
-    tweets = c.read_tweets(args.twitter_fname)
+def print_table(tweets, id_to_metadata):
     id_to_count = c.get_arxiv_id_counter(tweets)
 
-    with gzip.open(args.arxiv_fname) as arxiv_f:
-        id_to_metadata = json.loads(arxiv_f.read())
-    print('| Ranking | Tweets | Spec | Title | Pdf|')
-    print('|:---:|:---:|:---:|-------|---:|')
+    print('  | Ranking | Tweets | Spec | Title | Pdf|')
+    print('  |:---:|:---:|:---:|-------|---:|')
+
 
     for (lp, (id, count)) in enumerate(id_to_count.most_common(10),1):
         abs_url = 'http://arxiv.org/abs/%s' % id
@@ -46,6 +44,23 @@ def main(args):
             print('%2d | %4d | %10s | [%s](%s) | [here](%s) |' %
                   (lp, count, '?', '?', abs_url, abs_url, pdf_url))
 
+
+def main(args):
+    tweets = c.read_tweets(args.twitter_fname)
+
+    with gzip.open(args.arxiv_fname) as arxiv_f:
+        id_to_metadata = json.loads(arxiv_f.read())
+
+    print('* All\n')
+
+    print_table(tweets, id_to_metadata)
+
+    for spec in [ 'cs', 'stat', 'math', 'astro-ph',
+                  'physics', 'cond-mat', 'hep-th',
+                  'hep-ph', 'quant-ph', 'q-bio' ]:
+        print('\n* %s\n' % spec)
+        tweets_id = c.filter_tweets_by_spec(tweets, spec, id_to_metadata)
+        print_table(tweets_id, id_to_metadata)
 
 if __name__ == '__main__':
     main(parse(sys.argv[1:]))
